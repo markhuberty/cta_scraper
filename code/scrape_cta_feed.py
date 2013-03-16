@@ -6,7 +6,7 @@ import datetime
 import time
 import twitter
 import asciidammit
-from django.utils.encoding import smart_str, smart_unicode
+
 
 token_file = 'twitter_credentials.txt'
 credentials = cta.read_credentials(token_file)
@@ -24,7 +24,7 @@ all_messages = []
 all_ids = []
 all_times = []
 cta_id = 'cta'
-delay_interval = 30
+delay_interval = 600
 while True:
     if first_query:
         since_id = None
