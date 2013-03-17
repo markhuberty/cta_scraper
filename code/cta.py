@@ -29,7 +29,9 @@ lines = ['red',
          'blue',
          'yellow',
          'green',
-         'purple'
+         'purple',
+         'orange',
+         'pink'
          ]
 
 def read_credentials(credentials_file):
