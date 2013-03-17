@@ -1,7 +1,7 @@
 import re
 
 event_types = ['delay',
-               '(suspende{0,1}d{0,1})\s',
+               'suspende{0,1}d{0,1}\s',
                'rerout'
                ]
 event_status = ['\sended',
@@ -74,6 +74,7 @@ def return_event_data(txt):
     buses = re_bus.search(txt)
     direction = re_direction.search(txt)
     location = re_location.search(txt)
+    region = re_region.search(txt)
 
     this_type = parse_groups(types)
     this_code = parse_groups(codes)
@@ -98,6 +99,12 @@ def return_event_data(txt):
         this_location = location.groupdict()['location']#.strip()
     else:
         this_location = None
+    if region:
+        this_from = region.groupdict()['from']
+        this_to = region.groupdict()['to']
+    else:
+        this_from, this_to = None, None
+        
     out = {'type': this_type,
            'code': this_code,
            'reason': this_reason,
@@ -105,8 +112,10 @@ def return_event_data(txt):
            'l_line': l_lines,
            'location': this_location,
            'direction': this_direction,
-           'status': this_status# ,
-           # 'msg': txt_orig
+           'status': this_status,
+           'msg': txt_orig,
+           'from_loc': this_from,
+           'to_loc': this_to
            }
     return out
 
@@ -120,3 +129,4 @@ re_bus = re.compile('(?P<bus_number>[0-9].*?)bus(es){0,1}')
 re_location = re.compile('\s(at|near)\s(?P<location>[a-zA-Z0-9/]+)')
 re_event_reason = re.compile('due to (?P<reason>[a-zA-Z0-9]+)?(at|near|\.)')
 re_direction = re.compile('(?P<direction>[\w\'/]+)\-{0,1}bound')
+re_region = re.compile('between\s(?P<from>\w+)\sand\s(?P<to>\w+)')
